@@ -1,0 +1,45 @@
+
+
+{% block body %}
+<div class="container">
+    <h1>Mastermind</h1>
+    <p>Veuillez saisir successivement des combinaisons de 4 chiffres jusqu'à la victoire !</p>
+    
+    {# Display previous attempts #}
+    {% if Essais is not empty %}
+    <table>
+        <thead>
+            <tr>
+                <th>Numéro</th>
+                <th>Proposition</th>
+                <th>Bien placé(s)</th>
+                <th>Mal placé(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+             {% for essai in Essais %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ essai.code }}</td>
+                    <td>{{ essai.bienPlace }}</td>
+                    <td>{{ essai.malPlace }}</td>
+                </tr>
+            {% endfor %} 
+    {% endif %}
+        </tbody>
+    </table>
+        {# Form for user input #}
+    <form action="{{ path('check') }}" method="get">
+        <input type="text" name="code" maxlength="4" pattern="\d{4}" required>
+        <button type="submit">OK</button>
+    </form>
+    {# Display winning message if the game is finished #}
+    {% if Fini %}
+        <div class="winning-message">
+            <strong>GAGNÉ !</strong>
+            <p>Félicitations, vous avez gagné !</p>
+            <a href="{{ path('new') }}">Nouveau Jeu</a> {# Assuming 'new_game' is a valid route #}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
